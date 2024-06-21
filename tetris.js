@@ -174,6 +174,8 @@ function mergePiece() {
       }
     });
   });
+  const rowsCleared = removeCompleteRows();
+  updateScore(rowsCleared);
 }
 
 let dropCounter = 0;
@@ -186,11 +188,24 @@ let isPaused = false;
 function startGame() {
   board.forEach((row) => row.fill(0));
   score = 0;
-  isGameOver = false;
-  isPaused = false;
+  updateScore(0);
+  isGameOver = true;
+  isPaused = true;
   piece = createPiece();
   dropInterval = 1000;
-  gameLoop();
+  showMessage("TETRIS\nPress Enter to start");
+}
+
+function showMessage(message) {
+  const overlay = document.getElementById("message-overlay");
+  const content = document.getElementById("message-content");
+  content.textContent = message;
+  overlay.classList.remove("hidden");
+}
+
+function hideMessage() {
+  const overlay = document.getElementById("message-overlay");
+  overlay.classList.add("hidden");
 }
 
 function updateScore(rowsCleared) {
@@ -202,8 +217,10 @@ function updateScore(rowsCleared) {
 // Función para pausar/reanudar el juego
 function togglePause() {
   isPaused = !isPaused;
-  document.getElementById("game-status").textContent = isPaused ? "Paused" : "";
-  if (!isPaused) {
+  if (isPaused) {
+    showMessage("PAUSED\nPress P to resume");
+  } else {
+    hideMessage();
     lastTime = 0;
     gameLoop();
   }
@@ -228,8 +245,7 @@ function gameLoop(time = 0) {
 // Función de Game Over
 function gameOver() {
   isGameOver = true;
-  document.getElementById("game-status").textContent =
-    "Game Over! Press Enter to restart";
+  showMessage("GAME OVER\nPress Enter to restart");
 }
 
 // Controles del teclado
@@ -237,11 +253,14 @@ document.addEventListener("keydown", (event) => {
   if (isGameOver) {
     if (event.keyCode === 13) {
       // Enter para reiniciar
-      startGame();
+      hideMessage();
+      isGameOver = false;
+      isPaused = false;
+      piece = createPiece();
+      gameLoop();
     }
     return;
   }
-
   if (event.keyCode === 80) {
     // 'P' para pausar/reanudar
     togglePause();
@@ -261,7 +280,4 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// // Iniciar el juego
-// piece = createPiece();
-// gameLoop();
 startGame();

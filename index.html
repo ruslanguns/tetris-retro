@@ -3,20 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tetris en JavaScript</title>
-    <style>
-      canvas {
-        border: 1px solid #000;
-        display: block;
-        margin: 0 auto;
-      }
-    </style>
+    <title>Tetris Retro</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <canvas id="tetris" width="240" height="400"></canvas>
-    <div id="game-info">
-      <p>Score: <span id="score">0</span></p>
-      <p id="game-status"></p>
+    <div class="game-container">
+      <h1>Tetris Retro</h1>
+      <div class="game-area">
+        <canvas id="tetris" width="240" height="400"></canvas>
+        <div class="game-info">
+          <div class="score-box">
+            <h2>Score</h2>
+            <p id="score">0</p>
+          </div>
+          <div class="controls">
+            <p>← → : Move</p>
+            <p>↑ : Rotate</p>
+            <p>↓ : Drop</p>
+            <p>P : Pause</p>
+          </div>
+        </div>
+      </div>
+      <div id="message-overlay" class="hidden">
+        <div id="message-content"></div>
+      </div>
     </div>
     <script src="tetris.js"></script>
   </body>

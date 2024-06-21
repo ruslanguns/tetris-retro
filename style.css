@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.game-container {
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 3px 3px #ff00ff;
+}
+
+.game-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+canvas {
+  border: 4px solid #fff;
+  box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+.game-info {
+  text-align: left;
+}
+
+.score-box {
+  background-color: #000;
+  border: 2px solid #fff;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.score-box h2 {
+  font-size: 1em;
+  margin: 0 0 10px 0;
+}
+
+#score {
+  font-size: 1.5em;
+  color: #00ffff;
+}
+
+.controls {
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+#message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#message-content {
+  background-color: #000;
+  border: 4px solid #fff;
+  padding: 20px;
+  font-size: 1.5em;
+  text-align: center;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
