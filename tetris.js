@@ -178,13 +178,13 @@ function startGame() {
   isPaused = true;
   piece = createPiece();
   dropInterval = 1000;
-  showMessage("TETRIS\nPress Enter to start");
+  showMessage("Welcome!<br><br>Press Enter to start");
 }
 
 function showMessage(message) {
   const overlay = document.getElementById("message-overlay");
   const content = document.getElementById("message-content");
-  content.textContent = message;
+  content.innerHTML = message.replace(/\n/g, "<br>"); // Reemplaza \n con <br>
   overlay.classList.remove("hidden");
 }
 
@@ -202,7 +202,7 @@ function updateScore(rowsCleared) {
 function togglePause() {
   isPaused = !isPaused;
   if (isPaused) {
-    showMessage("PAUSED\nPress P to resume");
+    showMessage("GAME IS PAUSED <br><br> Press P to resume");
   } else {
     hideMessage();
     lastTime = 0;
@@ -227,7 +227,7 @@ function gameLoop(time = 0) {
 
 function gameOver() {
   isGameOver = true;
-  showMessage("GAME OVER\nPress Enter to restart");
+  showMessage("GAME OVER!\n\nPress Enter to restart");
 }
 
 function clearBoard() {

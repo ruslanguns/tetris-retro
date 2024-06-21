@@ -7,6 +7,7 @@ body {
   color: #fff;
   font-family: "Press Start 2P", cursive;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -44,6 +45,7 @@ canvas {
   border: 2px solid #fff;
   padding: 10px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .score-box h2 {
@@ -81,6 +83,25 @@ canvas {
   font-size: 1.5em;
   text-align: center;
   animation: blink 1s infinite;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.7em;
+
+  p > span.heart {
+    font-size: 1.5em !important;
+  }
+
+  p > a {
+    color: #ff00ff;
+  }
 }
 
 @keyframes blink {
