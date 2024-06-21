@@ -140,7 +140,7 @@ function pieceDrop() {
     mergePiece();
     piece = createPiece();
     if (collide(board, piece)) {
-      board.forEach((row) => row.fill(0));
+      gameOver();
     }
   }
   dropCounter = 0;
@@ -179,9 +179,40 @@ function mergePiece() {
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
+let isGameOver = false;
+let isPaused = false;
+
+// Función para iniciar/reiniciar el juego
+function startGame() {
+  board.forEach((row) => row.fill(0));
+  score = 0;
+  isGameOver = false;
+  isPaused = false;
+  piece = createPiece();
+  dropInterval = 1000;
+  gameLoop();
+}
+
+function updateScore(rowsCleared) {
+  const points = [0, 40, 100, 300, 1200];
+  score += points[rowsCleared];
+  document.getElementById("score").textContent = score;
+}
+
+// Función para pausar/reanudar el juego
+function togglePause() {
+  isPaused = !isPaused;
+  document.getElementById("game-status").textContent = isPaused ? "Paused" : "";
+  if (!isPaused) {
+    lastTime = 0;
+    gameLoop();
+  }
+}
 
 // Bucle del juego
 function gameLoop(time = 0) {
+  if (isPaused || isGameOver) return;
+
   const deltaTime = time - lastTime;
   lastTime = time;
 
@@ -194,8 +225,31 @@ function gameLoop(time = 0) {
   requestAnimationFrame(gameLoop);
 }
 
+// Función de Game Over
+function gameOver() {
+  isGameOver = true;
+  document.getElementById("game-status").textContent =
+    "Game Over! Press Enter to restart";
+}
+
 // Controles del teclado
 document.addEventListener("keydown", (event) => {
+  if (isGameOver) {
+    if (event.keyCode === 13) {
+      // Enter para reiniciar
+      startGame();
+    }
+    return;
+  }
+
+  if (event.keyCode === 80) {
+    // 'P' para pausar/reanudar
+    togglePause();
+    return;
+  }
+
+  if (isPaused) return;
+
   if (event.keyCode === 37) {
     movePiece(-1);
   } else if (event.keyCode === 39) {
@@ -207,6 +261,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// Iniciar el juego
-piece = createPiece();
-gameLoop();
+// // Iniciar el juego
+// piece = createPiece();
+// gameLoop();
+startGame();
