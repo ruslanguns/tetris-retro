@@ -7,13 +7,9 @@ const COLUMNS = 12;
 
 context.scale(SCALE, SCALE);
 
-// Matriz para representar el tablero
 const board = createMatrix(COLUMNS, ROWS);
 
-// Pieza actual
 let piece;
-
-// Piezas de Tetris
 const PIECES = [
   [
     [1, 1],
@@ -53,7 +49,6 @@ const COLORS = [
   "#3877FF",
 ];
 
-// Crear matriz
 function createMatrix(w, h) {
   const matrix = [];
   while (h--) {
@@ -62,7 +57,6 @@ function createMatrix(w, h) {
   return matrix;
 }
 
-// Crear nueva pieza
 function createPiece() {
   const piece = PIECES[Math.floor(Math.random() * PIECES.length)];
   return {
@@ -74,7 +68,6 @@ function createPiece() {
   };
 }
 
-// Dibujar matriz
 function drawMatrix(matrix, offset) {
   matrix.forEach((row, y) => {
     row.forEach((value, x) => {
@@ -86,7 +79,6 @@ function drawMatrix(matrix, offset) {
   });
 }
 
-// Función principal de dibujo
 function draw() {
   context.fillStyle = "#000";
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -95,7 +87,6 @@ function draw() {
   drawMatrix(piece.matrix, piece.position);
 }
 
-// Colisión
 function collide(board, piece) {
   const [m, o] = [piece.matrix, piece.position];
   for (let y = 0; y < m.length; ++y) {
@@ -108,7 +99,6 @@ function collide(board, piece) {
   return false;
 }
 
-// Mover pieza
 function movePiece(dir) {
   piece.position.x += dir;
   if (collide(board, piece)) {
@@ -116,7 +106,6 @@ function movePiece(dir) {
   }
 }
 
-// Rotar pieza
 function rotatePiece() {
   const rotated = piece.matrix[0].map((val, index) =>
     piece.matrix.map((row) => row[index]).reverse()
@@ -132,7 +121,6 @@ function rotatePiece() {
   }
 }
 
-// Caída de la pieza
 function pieceDrop() {
   piece.position.y++;
   if (collide(board, piece)) {
@@ -146,7 +134,6 @@ function pieceDrop() {
   dropCounter = 0;
 }
 
-// Función para eliminar filas completas
 function removeCompleteRows() {
   let rowsCleared = 0;
   outer: for (let y = board.length - 1; y >= 0; --y) {
@@ -165,7 +152,6 @@ function removeCompleteRows() {
   return rowsCleared;
 }
 
-// Fusionar pieza con el tablero
 function mergePiece() {
   piece.matrix.forEach((row, y) => {
     row.forEach((value, x) => {
@@ -184,7 +170,6 @@ let lastTime = 0;
 let isGameOver = false;
 let isPaused = false;
 
-// Función para iniciar/reiniciar el juego
 function startGame() {
   board.forEach((row) => row.fill(0));
   score = 0;
@@ -214,7 +199,6 @@ function updateScore(rowsCleared) {
   document.getElementById("score").textContent = score;
 }
 
-// Función para pausar/reanudar el juego
 function togglePause() {
   isPaused = !isPaused;
   if (isPaused) {
@@ -226,7 +210,6 @@ function togglePause() {
   }
 }
 
-// Bucle del juego
 function gameLoop(time = 0) {
   if (isPaused || isGameOver) return;
 
@@ -242,17 +225,20 @@ function gameLoop(time = 0) {
   requestAnimationFrame(gameLoop);
 }
 
-// Función de Game Over
 function gameOver() {
   isGameOver = true;
   showMessage("GAME OVER\nPress Enter to restart");
 }
 
-// Controles del teclado
+function clearBoard() {
+  board.forEach((row) => row.fill(0));
+  document.getElementById("score").textContent = 0;
+}
+
 document.addEventListener("keydown", (event) => {
   if (isGameOver) {
-    if (event.keyCode === 13) {
-      // Enter para reiniciar
+    if (event.key === "Enter") {
+      clearBoard(board);
       hideMessage();
       isGameOver = false;
       isPaused = false;
@@ -261,22 +247,26 @@ document.addEventListener("keydown", (event) => {
     }
     return;
   }
-  if (event.keyCode === 80) {
-    // 'P' para pausar/reanudar
+  if (event.key === "p" || event.key === "P") {
     togglePause();
     return;
   }
 
   if (isPaused) return;
 
-  if (event.keyCode === 37) {
-    movePiece(-1);
-  } else if (event.keyCode === 39) {
-    movePiece(1);
-  } else if (event.keyCode === 40) {
-    pieceDrop();
-  } else if (event.keyCode === 38) {
-    rotatePiece();
+  switch (event.key) {
+    case "ArrowLeft":
+      movePiece(-1);
+      break;
+    case "ArrowRight":
+      movePiece(1);
+      break;
+    case "ArrowDown":
+      pieceDrop();
+      break;
+    case "ArrowUp":
+      rotatePiece();
+      break;
   }
 });
 
